@@ -9,8 +9,9 @@ function setup() {
   noStroke();
 
   //create slider
-  vSlider = createSlider(0, 10, 100);
-  vSlider.position(20,20);
+  vSlider = createSlider(0, 10, 0);
+  vSlider.position(20,70);
+  vSlider.style('rotate', -90)
   button = createButton('Play');
   button.position(170, 20);
   song = loadSound('assets/sandman.mp3');
