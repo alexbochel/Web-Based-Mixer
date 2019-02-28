@@ -14,28 +14,23 @@ function setup() {
   button = createButton('Play');
   button.position(170, 20);
   song = loadSound('assets/sandman.mp3');
-  button.mousePressed(playpause);
+  button.mousePressed(togglePlay);
 }
 
-function mousePressed() {
-  // if ( song.isPlaying() ) { // .isPlaying() returns a boolean
-  //   song.stop();
-  //   background(255,0,0);
-  // } else {
-  //   song.play();
-  //   background(0,255,0);
-  // }
-  // song.play();
-}
 function draw() {
   // put drawing code here
   song.amp(vSlider.value());
 }
 
-function playpause() {
-  if ( song.isPlaying() ) { // .isPlaying() returns a boolean
-    song.stop();
+function togglePlay() {
+  if ( song.isPlaying() ) {
+    button.html("Play");
+    song.pause();
   } else {
+    button.html("Pause");
     song.play();
   }
 }
+
+//FOR MUTE
+//SET AMP TO ZERO AND GET SLIDER VALUE ON UNMUTE
