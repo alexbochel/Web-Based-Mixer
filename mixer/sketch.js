@@ -8,10 +8,13 @@ function setup() {
   noStroke();
 
   tracks = [];
-  tracks.push(new Track('assets/sandman.mp3'));
+  tracks.push(new Track('assets/sandman.mp3', 1));
+  tracks.push(new Track('assets/sandman.mp3', 2));
+  tracks.push(new Track('assets/sandman.mp3', 3));
+  tracks.push(new Track('assets/sandman.mp3', 4));
 
   button = createButton('Play');
-  button.position(170, 20);
+  button.position(20, 20);
   button.mousePressed(togglePlay);
 }
 
@@ -40,10 +43,11 @@ function togglePlay() {
 //SET AMP TO ZERO AND GET SLIDER VALUE ON UNMUTE
 
 class Track {
-  constructor(f) {
+  constructor(f, mixerNumber) {
     this.file = loadSound(f, this.loaded);
-    this.slider = createSlider(0,10,100);
-    this.slider.position(20,70);
+    this.mixerNumber = mixerNumber;
+    this.slider = createSlider(0,10,0);
+    this.slider.position(mixerNumber * 40,70);
     this.slider.style('rotate', '-90');
   }
 
