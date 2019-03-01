@@ -8,10 +8,10 @@ function setup() {
   noStroke();
 
   tracks = [];
-  tracks.push(new Track('assets/sandman.mp3', 1));
-  tracks.push(new Track('assets/sandman.mp3', 2));
-  tracks.push(new Track('assets/sandman.mp3', 3));
-  tracks.push(new Track('assets/sandman.mp3', 4));
+  tracks.push(new Track('assets/Guitar Bus.wav', 1));
+  tracks.push(new Track('assets/Current.wav', 2));
+  tracks.push(new Track('assets/Bass Drum.wav', 3));
+  tracks.push(new Track('assets/Bass.wav', 4));
 
   button = createButton('Play');
   button.position(20, 20);
