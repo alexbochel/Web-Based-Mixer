@@ -9,10 +9,14 @@ function setup() {
 
   tracks = [];
   tracks.push(new Track('assets/sandman.mp3'));
+  console.log(tracks[0]);
 
   button = createButton('Play');
   button.position(170, 20);
   button.mousePressed(togglePlay);
+
+
+
 }
 
 function draw() {
@@ -34,6 +38,7 @@ function togglePlay() {
       button.html("Pause");
     }
   }
+  console.log(tracks[0]);
 }
 
 //FOR MUTE
@@ -45,10 +50,31 @@ class Track {
     this.slider = createSlider(0,10,100);
     this.slider.position(20,70);
     this.slider.style('rotate', '-90');
+
+    // this.muted = false;
+
+    this.m = createButton('Mute');
+    this.m.position(170, 50);
+    this.m.mousePressed(this.toggleMute);
+    this.m.muted = false;
+  }
+
+  toggleMute() {
+    this.muted = !this.muted;
+    if (this.muted) {
+      this.html("Unmute");
+    }
+    else {
+      this.html("Mute");
+    }
   }
 
   setVolume() {
-    this.file.amp(this.slider.value());
+    if (this.m.muted) {
+      this.file.amp(0);
+    } else {
+      this.file.amp(this.slider.value());
+    }
   }
 
   loaded() {
