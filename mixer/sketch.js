@@ -1,5 +1,4 @@
 let play;
-
 let tracks;
 
 function setup() {
@@ -7,19 +6,18 @@ function setup() {
   createCanvas(800, 800);
   noStroke();
 
+  button = createButton('Play');
+  button.position(20, 75);
+  button.mousePressed(togglePlay);
 
+}
+
+function preload() {
   tracks = [];
   tracks.push(new Track('assets/Guitar Bus.wav', 1));
   tracks.push(new Track('assets/Current.wav', 2));
   tracks.push(new Track('assets/Bass Drum.wav', 3));
   tracks.push(new Track('assets/Bass.wav', 4));
-
-  button = createButton('Play');
-  button.position(20, 20);
-  button.mousePressed(togglePlay);
-
-
-
 }
 
 function draw() {
@@ -43,9 +41,6 @@ function togglePlay() {
   }
   console.log(tracks[0]);
 }
-
-//FOR MUTE
-//SET AMP TO ZERO AND GET SLIDER VALUE ON UNMUTE
 
 class Track {
   constructor(f, mixerNumber) {
