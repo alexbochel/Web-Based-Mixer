@@ -7,12 +7,15 @@ function setup() {
   createCanvas(800, 800);
   noStroke();
 
+
   tracks = [];
-  tracks.push(new Track('assets/sandman.mp3'));
-  console.log(tracks[0]);
+  tracks.push(new Track('assets/Guitar Bus.wav', 1));
+  tracks.push(new Track('assets/Current.wav', 2));
+  tracks.push(new Track('assets/Bass Drum.wav', 3));
+  tracks.push(new Track('assets/Bass.wav', 4));
 
   button = createButton('Play');
-  button.position(170, 20);
+  button.position(20, 20);
   button.mousePressed(togglePlay);
 
 
@@ -45,16 +48,15 @@ function togglePlay() {
 //SET AMP TO ZERO AND GET SLIDER VALUE ON UNMUTE
 
 class Track {
-  constructor(f) {
+  constructor(f, mixerNumber) {
     this.file = loadSound(f, this.loaded);
-    this.slider = createSlider(0,10,100);
-    this.slider.position(20,70);
+    this.mixerNumber = mixerNumber;
+    this.slider = createSlider(0,10,0);
+    this.slider.position(mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
 
-    // this.muted = false;
-
     this.m = createButton('Mute');
-    this.m.position(170, 50);
+    this.m.position(mixerNumber*100 + 45, 150);
     this.m.mousePressed(this.toggleMute);
     this.m.muted = false;
   }
