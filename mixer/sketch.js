@@ -1,5 +1,7 @@
 let play;
 let tracks;
+let solos;
+let numSolo;
 
 function setup() {
   // put setup code here
@@ -10,6 +12,8 @@ function setup() {
   button.position(20, 75);
   button.mousePressed(togglePlay);
 
+  solos = [];
+  numSolo = 0;
 }
 
 function preload() {
@@ -23,9 +27,17 @@ function preload() {
 function draw() {
   // put drawing code here
   for (var i = 0; i < tracks.length; i++) {
-    if(tracks[i].file.isPlaying())
-      tracks[i].setVolume();
+    solos.push(tracks[i].solo.isSolo);
+    if (tracks[i].solo.isSolo) numSolo++;
   }
+
+  for (var i = 0; i < tracks.length; i++) {
+    if(tracks[i].file.isPlaying())
+      tracks[i].setVolume(numSolo);
+  }
+
+  solos = [];
+  numSolo = 0;
 }
 
 function togglePlay() {
@@ -39,7 +51,6 @@ function togglePlay() {
       button.html("Pause");
     }
   }
-  console.log(tracks[0]);
 }
 
 class Track {
@@ -50,10 +61,15 @@ class Track {
     this.slider.position(mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
 
-    this.m = createButton('Mute');
-    this.m.position(mixerNumber*100 + 45, 150);
-    this.m.mousePressed(this.toggleMute);
-    this.m.muted = false;
+    this.mute = createButton('Mute');
+    this.mute.position(mixerNumber*100 + 45, 150);
+    this.mute.mousePressed(this.toggleMute);
+    this.mute.muted = false;
+
+    this.solo = createButton('Solo');
+    this.solo.position(mixerNumber * 100 + 45, 170);
+    this.solo.mousePressed(this.toggleSolo);
+    this.solo.isSolo = false;
   }
 
   toggleMute() {
@@ -66,8 +82,28 @@ class Track {
     }
   }
 
-  setVolume() {
-    if (this.m.muted) {
+  toggleSolo() {
+    this.isSolo = !this.isSolo;
+    if (this.isSolo) {
+      this.html("Un-solo");
+    }
+    else {
+      this.html("Solo");
+    }
+  }
+
+  isSolo() {
+    return this.solo.isSolo;
+  }
+
+  setVolume(numSolo) {
+    if (numSolo > 0) {
+      if (!this.solo.isSolo || this.mute.muted) this.file.amp(0);
+      else {
+        this.file.amp(this.slider.value());
+      }
+    }
+    else if (this.mute.muted) {
       this.file.amp(0);
     } else {
       this.file.amp(this.slider.value());
