@@ -20,10 +20,12 @@ function setup() {
 
 function preload() {
   tracks = [];
-  tracks.push(new Track('assets/Guitar Bus.wav', 1));
-  tracks.push(new Track('assets/Current.wav', 2));
-  tracks.push(new Track('assets/Bass Drum.wav', 3));
-  tracks.push(new Track('assets/Bass.wav', 4));
+  tracks.push(new Track('assets/Lab Children_Drum Bus.wav', 1));
+  tracks.push(new Track('assets/Lab Children_Chords Synth.wav', 2));
+  tracks.push(new Track('assets/Lab Children_Lead Synth.wav', 3));
+  tracks.push(new Track('assets/Lab Children_Lead Marimba.wav', 4));
+  tracks.push(new Track('assets/Lab Children_Lead Synth_2.wav', 5));
+
 }
 
 function draw() {
