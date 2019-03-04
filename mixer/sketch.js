@@ -2,6 +2,7 @@ let play;
 let tracks;
 let solos;
 let numSolo;
+let x = 0;
 
 function setup() {
   // put setup code here
@@ -11,7 +12,8 @@ function setup() {
   button = createButton('Play');
   button.position(20, 75);
   button.mousePressed(togglePlay);
-
+  this.slider = createSlider(0,100,0);
+  this.slider.position(20,50);
   solos = [];
   numSolo = 0;
 }
@@ -36,6 +38,10 @@ function draw() {
       tracks[i].setVolume(numSolo);
   }
 
+  if(tracks[0].file.isPlaying()){
+    this.slider.value(x + 0.1);
+    x += 0.1
+  }
   solos = [];
   numSolo = 0;
 }
@@ -60,6 +66,8 @@ class Track {
     this.slider = createSlider(0,10,0);
     this.slider.position(mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
+
+
 
     this.mute = createButton('Mute');
     this.mute.position(mixerNumber*100 + 45, 150);
