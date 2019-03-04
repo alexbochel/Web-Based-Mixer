@@ -13,9 +13,15 @@ function setup() {
   button.position(20, 75);
   button.mousePressed(togglePlay);
   this.slider = createSlider(0,100,0);
-  this.slider.position(20,50);
+  this.slider.position(20,220);
+  this.slider.mousePressed(scrub);
   solos = [];
   numSolo = 0;
+}
+
+function scrub(){
+  togglePlay();
+
 }
 
 function preload() {
@@ -39,11 +45,13 @@ function draw() {
     if(tracks[i].file.isPlaying())
       tracks[i].setVolume(numSolo);
   }
+  curr =  100*tracks[0].file.currentTime()/tracks[0].file.duration();
 
   if(tracks[0].file.isPlaying()){
-    this.slider.value(x + 0.1);
-    x += 0.1
+    this.slider.value(curr);
+    x = curr;
   }
+  console.log(x);
   solos = [];
   numSolo = 0;
 }
