@@ -74,18 +74,18 @@ class Track {
     this.file = loadSound(f, this.loaded);
     this.mixerNumber = mixerNumber;
     this.slider = createSlider(0,10,0);
-    this.slider.position(mixerNumber * 100,70);
+    this.slider.position(mixerNumber * 100 + 45,70);
     this.slider.style('rotate', '-90');
 
 
 
     this.mute = createButton('Mute');
-    this.mute.position(mixerNumber*100 + 45, 150);
+    this.mute.position(mixerNumber*100 + 90, 165);
     this.mute.mousePressed(this.toggleMute);
     this.mute.muted = false;
 
     this.solo = createButton('Solo');
-    this.solo.position(mixerNumber * 100 + 45, 170);
+    this.solo.position(mixerNumber * 100 + 90, 190);
     this.solo.mousePressed(this.toggleSolo);
     this.solo.isSolo = false;
   }
