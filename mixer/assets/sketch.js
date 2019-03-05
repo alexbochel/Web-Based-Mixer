@@ -5,7 +5,7 @@ let numSolo;
 let x = 0;
 let selectedBand;
 let bands = ['Lows', 'Mids', 'HIs'];
-
+let slider;
 let canvas;
 let bg;
 
@@ -18,12 +18,12 @@ function setup() {
   noStroke();
 
   button = createButton('Play');
-  button.position(20, 75);
+  button.position(window.innerWidth / 4 + 20, 75);
   button.mousePressed(togglePlay);
-  this.slider = createSlider(0,100,0);
-  this.slider.position(130,325);
-  this.slider.style('width', '475px');
-  this.slider.mousePressed(scrub);
+  slider = createSlider(0,100,0);
+  slider.position(window.innerWidth / 4 + 130,325);
+  slider.style('width', '475px');
+  slider.mousePressed(scrub);
   solos = [];
     fft = new p5.FFT();
   selectedBand = [];
@@ -57,6 +57,8 @@ function preload() {
 
 function draw() {
   clear();
+  button.position(window.innerWidth / 4 + 20, 75);
+  slider.position(window.innerWidth / 4 + 130,325);
   // put drawing code here
   background(bg);
 
@@ -74,6 +76,7 @@ function draw() {
   }
 
   for (var i = 0; i < tracks.length; i++) {
+    tracks[i].show();
     if(tracks[i].soundFile.isPlaying())
       tracks[i].setVolume(numSolo);
   }
@@ -129,29 +132,38 @@ class Track {
     this.createEQLevelSlider();
   }
 
+
+  show() {
+    this.slider.position(window.innerWidth / 4 + this.mixerNumber * 100,70);
+    this.mute.position(window.innerWidth / 4 + this.mixerNumber*100 + 45, 165);
+    this.solo.position(window.innerWidth / 4 + this.mixerNumber * 100 + 47, 195);
+    this.dropdown.position(window.innerWidth / 4 + this.mixerNumber * 100 + 37, 225);
+    this.eqslider. position(window.innerWidth / 4 + this.mixerNumber*100 + 25, 260);
+  }
+
   createVolumeSliders() {
     this.slider = createSlider(0,10,5, 0.1);
-    this.slider.position(this.mixerNumber * 100,70);
+    // this.slider.position(window.innerWidth / 4 + this.mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
   }
 
   createMuteButtons() {
     this.mute = createButton('Mute');
-    this.mute.position(this.mixerNumber*100 + 45, 165);
+    // this.mute.position(this.mixerNumber*100 + 45, 165);
     this.mute.mousePressed(this.toggleMute);
     this.mute.muted = false;
   }
 
   createSoloButtons() {
     this.solo = createButton('Solo');
-    this.solo.position(this.mixerNumber * 100 + 47, 195);
+    // this.solo.position(this.mixerNumber * 100 + 47, 195);
     this.solo.mousePressed(this.toggleSolo);
     this.solo.isSolo = false;
   }
 
   createAttenuatorDropdownMenu() {
     this.dropdown = createSelect();
-    this.dropdown.position(this.mixerNumber * 100 + 37, 225);
+    // this.dropdown.position(this.mixerNumber * 100 + 37, 225);
     this.dropdown.option('HIs','HIs');
     this.dropdown.option('Mids','Mids');
     this.dropdown.option('Lows','Lows');
@@ -166,7 +178,7 @@ class Track {
   createEQLevelSlider() {
     this.eqslider = createSlider(-12, 12, 0, 0.1);
     this.eqslider.style('width', '80px');
-    this.eqslider. position(this.mixerNumber*100 + 25, 260);
+    // this.eqslider. position(this.mixerNumber*100 + 25, 260);
   }
 
   toggleMute() {
