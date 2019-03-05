@@ -104,6 +104,10 @@ class Track {
     //  Mixer number for positioning
     this.mixerNumber = mixerNumber;
 
+    // Box for behind the slider
+    //fill(204, 101, 192, 127);
+    //this.rect = rect(mixerNumber*100, 100, mixerNumber*100 + 45, 200)
+
     //  Volume Slider
     this.slider = createSlider(0,10,5, 0.1);
     this.slider.position(mixerNumber * 100,70);
