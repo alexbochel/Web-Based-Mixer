@@ -46,7 +46,7 @@ function preload() {
 function draw() {
   // put drawing code here
   background('#b6afe0');
-  
+
   for (var i = 0; i < tracks.length; i++) {
     solos.push(tracks[i].solo.isSolo);
     if (tracks[i].solo.isSolo) numSolo++;
