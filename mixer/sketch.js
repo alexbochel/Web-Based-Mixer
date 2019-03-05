@@ -3,6 +3,8 @@ let tracks;
 let solos;
 let numSolo;
 let x = 0;
+let selectedBand;
+let bands = ['Lows', 'Mids', 'HIs'];
 
 function setup() {
   // put setup code here
@@ -15,6 +17,12 @@ function setup() {
   this.slider = createSlider(0,100,0);
   this.slider.position(20,50);
   solos = [];
+
+  selectedBand = [];
+  for (var i = 0; i < tracks.length; i++) {
+    selectedBand.push(tracks[i].dropdown.selected());
+  }
+
   numSolo = 0;
 }
 
@@ -36,6 +44,14 @@ function draw() {
   }
 
   for (var i = 0; i < tracks.length; i++) {
+    if (tracks[i].dropdown.selected() != selectedBand[i]) {
+      tracks[i].eq.bands[catchNum(selectedBand[i])].gain(tracks[i].eqslider.value());
+      selectedBand[i] = tracks[i].dropdown.selected();
+      tracks[i].eqslider.value(tracks[i].eq.bands[catchNum(selectedBand[i])].gain());
+    }
+  }
+
+  for (var i = 0; i < tracks.length; i++) {
     if(tracks[i].file.isPlaying())
       tracks[i].setVolume(numSolo);
   }
@@ -46,6 +62,12 @@ function draw() {
   }
   solos = [];
   numSolo = 0;
+}
+
+function catchNum(band) {
+  if (band == "HIs") return 2;
+  else if (band == "Mids") return 1;
+  else return 0;
 }
 
 function togglePlay() {
@@ -62,24 +84,48 @@ function togglePlay() {
 }
 
 class Track {
+
   constructor(f, mixerNumber) {
+
+    //  Sound file
     this.file = loadSound(f, this.loaded);
+
+    //  Mixer number for positioning
     this.mixerNumber = mixerNumber;
-    this.slider = createSlider(0,10,0);
+
+    //  Volume Slider
+    this.slider = createSlider(0,10,5, 0.1);
     this.slider.position(mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
 
-
-
+    //  Mute Button
     this.mute = createButton('Mute');
     this.mute.position(mixerNumber*100 + 45, 150);
     this.mute.mousePressed(this.toggleMute);
     this.mute.muted = false;
 
+    //  Solo Button
     this.solo = createButton('Solo');
-    this.solo.position(mixerNumber * 100 + 45, 170);
+    this.solo.position(mixerNumber * 100 + 47, 170);
     this.solo.mousePressed(this.toggleSolo);
     this.solo.isSolo = false;
+
+    //  Dropdown menu
+    this.dropdown = createSelect();
+    this.dropdown.position(mixerNumber * 100 + 37, 205);
+    this.dropdown.option('HIs','HIs');
+    this.dropdown.option('Mids','Mids');
+    this.dropdown.option('Lows','Lows');
+
+    //  Band Processor
+    this.eq = new p5.EQ(3);
+    this.file.disconnect();
+    this.eq.process(this.file);
+
+    //  EQ-Band level slider
+    this.eqslider = createSlider(-12, 12, 0, 0.1);
+    this.eqslider.style('width', '80px');
+    this.eqslider. position(mixerNumber*100 + 25, 230);
   }
 
   toggleMute() {
@@ -107,6 +153,16 @@ class Track {
   }
 
   setVolume(numSolo) {
+    //Live editing of band gain
+    if (this.dropdown.selected() == 'HIs') {
+      this.eq.bands[2].gain(this.eqslider.value());
+    } else if (this.dropdown.selected() == 'Mids') {
+      this.eq.bands[1].gain(this.eqslider.value());
+    } else {
+      this.eq.bands[0].gain(this.eqslider.value());
+    }
+
+    //Live editing of track volume
     if (numSolo > 0) {
       if (!this.solo.isSolo || this.mute.muted) this.file.amp(0);
       else {
@@ -123,5 +179,4 @@ class Track {
   loaded() {
     console.log("loaded");
   }
-
 }
