@@ -4,8 +4,20 @@ img {
   border-radius: 50%;
 }
 
+.main-title {
+  text-align: center;
+}
+
 .bio-container {
   text-align: center;
+}
+
+p {
+  padding-top: 10px;
+}
+
+.bio-title {
+  padding-bottom: 20px;
 }
 
 input[type=range] {
