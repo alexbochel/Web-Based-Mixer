@@ -8,9 +8,9 @@ let bands = ['Lows', 'Mids', 'HIs'];
 
 function setup() {
   // put setup code here
-  canvas = createCanvas(800, 800);
+  createCanvas(800, 800);
   noStroke();
-
+  fft = new p5.FFT();
   button = createButton('Play');
   button.position(20, 75);
   button.mousePressed(togglePlay);
@@ -19,7 +19,7 @@ function setup() {
   this.slider.style('width', '475px');
   this.slider.mousePressed(scrub);
   solos = [];
-    fft = new p5.FFT();
+
   selectedBand = [];
   for (var i = 0; i < tracks.length; i++) {
     selectedBand.push(tracks[i].dropdown.selected());
@@ -44,10 +44,7 @@ function preload() {
 }
 
 function draw() {
-  clear();
   // put drawing code here
-  background('#b6afe0');
-
   for (var i = 0; i < tracks.length; i++) {
     solos.push(tracks[i].solo.isSolo);
     if (tracks[i].solo.isSolo) numSolo++;
@@ -62,24 +59,25 @@ function draw() {
   }
 
   for (var i = 0; i < tracks.length; i++) {
-    if(tracks[i].soundFile.isPlaying())
+    if(tracks[i].file.isPlaying())
       tracks[i].setVolume(numSolo);
   }
-  curr =  100*tracks[0].soundFile.currentTime()/tracks[0].soundFile.duration();
+  curr =  100*tracks[0].file.currentTime()/tracks[0].file.duration();
 
-  if(tracks[0].soundFile.isPlaying()){
+  if(tracks[0].file.isPlaying()){
     this.slider.value(curr);
     x = curr;
   }
+
+// VISUALIZATION CODE STARTS HERE
   var spectrum = fft.analyze();
   noStroke();
-  fill(23,0,0);
+  fill(0,0,0);
   for (var i = 0; i< spectrum.length; i++){
-  var yx = map(i, 0, spectrum.length, 0, width+100);
-  var h = -height + map(spectrum[i], 0, 255, height, 0);
-  rect(yx, height, width / spectrum.length, h )
+    var x = map(i, 0, spectrum.length, 0, width);
+    var h = map(spectrum[i], 0, 255, height, 0);
+    rect(x, height, width / spectrum.length, h )
   }
-
   solos = [];
   numSolo = 0;
 }
@@ -92,12 +90,12 @@ function catchNum(band) {
 
 function togglePlay() {
   for (var i = 0; i < tracks.length; i++) {
-    if(tracks[i].soundFile.isPlaying()) {
-      tracks[i].soundFile.pause();
+    if(tracks[i].file.isPlaying()) {
+      tracks[i].file.pause();
       button.html("Play");
     }
     else {
-      tracks[i].soundFile.play();
+      tracks[i].file.play();
       button.html("Pause");
     }
   }
@@ -106,55 +104,46 @@ function togglePlay() {
 class Track {
 
   constructor(f, mixerNumber) {
-    this.soundFile = loadSound(f, this.loaded);
+
+    //  Sound file
+    this.file = loadSound(f, this.loaded);
+
+    //  Mixer number for positioning
     this.mixerNumber = mixerNumber;
 
-    this.createVolumeSliders();
-    this.createMuteButtons();
-    this.createSoloButtons();
-    this.createAttenuatorDropdownMenu();
-    this.createBandProcessor();
-    this.createEQLevelSlider();
-  }
-
-  createVolumeSliders() {
+    //  Volume Slider
     this.slider = createSlider(0,10,5, 0.1);
-    this.slider.position(this.mixerNumber * 100,70);
+    this.slider.position(mixerNumber * 100,70);
     this.slider.style('rotate', '-90');
-  }
 
-  createMuteButtons() {
+    //  Mute Button
     this.mute = createButton('Mute');
-    this.mute.position(this.mixerNumber*100 + 45, 165);
+    this.mute.position(mixerNumber*100 + 45, 165);
     this.mute.mousePressed(this.toggleMute);
     this.mute.muted = false;
-  }
 
-  createSoloButtons() {
+    //  Solo Button
     this.solo = createButton('Solo');
-    this.solo.position(this.mixerNumber * 100 + 47, 195);
+    this.solo.position(mixerNumber * 100 + 47, 195);
     this.solo.mousePressed(this.toggleSolo);
     this.solo.isSolo = false;
-  }
 
-  createAttenuatorDropdownMenu() {
+    //  Dropdown menu
     this.dropdown = createSelect();
-    this.dropdown.position(this.mixerNumber * 100 + 37, 225);
+    this.dropdown.position(mixerNumber * 100 + 37, 225);
     this.dropdown.option('HIs','HIs');
     this.dropdown.option('Mids','Mids');
     this.dropdown.option('Lows','Lows');
-  }
 
-  createBandProcessor() {
+    //  Band Processor
     this.eq = new p5.EQ(3);
-    this.soundFile.disconnect();
-    this.eq.process(this.soundFile);
-  }
+    this.file.disconnect();
+    this.eq.process(this.file);
 
-  createEQLevelSlider() {
+    //  EQ-Band level slider
     this.eqslider = createSlider(-12, 12, 0, 0.1);
     this.eqslider.style('width', '80px');
-    this.eqslider. position(this.mixerNumber*100 + 25, 260);
+    this.eqslider. position(mixerNumber*100 + 25, 260);
   }
 
   toggleMute() {
@@ -193,15 +182,15 @@ class Track {
 
     //Live editing of track volume
     if (numSolo > 0) {
-      if (!this.solo.isSolo || this.mute.muted) this.soundFile.amp(0);
+      if (!this.solo.isSolo || this.mute.muted) this.file.amp(0);
       else {
-        this.soundFile.amp(this.slider.value());
+        this.file.amp(this.slider.value());
       }
     }
     else if (this.mute.muted) {
-      this.soundFile.amp(0);
+      this.file.amp(0);
     } else {
-      this.soundFile.amp(this.slider.value());
+      this.file.amp(this.slider.value());
     }
   }
 
