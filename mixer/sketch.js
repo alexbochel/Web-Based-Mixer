@@ -8,9 +8,9 @@ let bands = ['Lows', 'Mids', 'HIs'];
 
 function setup() {
   // put setup code here
-  canvas = createCanvas(800, 800);
+  createCanvas(800, 800);
   noStroke();
-
+  fft = new p5.FFT();
   button = createButton('Play');
   button.position(20, 75);
   button.mousePressed(togglePlay);
@@ -19,7 +19,7 @@ function setup() {
   this.slider.style('width', '475px');
   this.slider.mousePressed(scrub);
   solos = [];
-    fft = new p5.FFT();
+
   selectedBand = [];
   for (var i = 0; i < tracks.length; i++) {
     selectedBand.push(tracks[i].dropdown.selected());
@@ -44,10 +44,7 @@ function preload() {
 }
 
 function draw() {
-  clear();
   // put drawing code here
-  background('#b6afe0');
-  
   for (var i = 0; i < tracks.length; i++) {
     solos.push(tracks[i].solo.isSolo);
     if (tracks[i].solo.isSolo) numSolo++;
@@ -71,15 +68,16 @@ function draw() {
     this.slider.value(curr);
     x = curr;
   }
+
+// VISUALIZATION CODE STARTS HERE
   var spectrum = fft.analyze();
   noStroke();
-  fill(23,0,0);
+  fill(0,0,0);
   for (var i = 0; i< spectrum.length; i++){
-  var yx = map(i, 0, spectrum.length, 0, width+100);
-  var h = -height + map(spectrum[i], 0, 255, height, 0);
-  rect(yx, height, width / spectrum.length, h )
+    var x = map(i, 0, spectrum.length, 0, width);
+    var h = map(spectrum[i], 0, 255, height, 0);
+    rect(x, height, width / spectrum.length, h )
   }
-
   solos = [];
   numSolo = 0;
 }
@@ -112,10 +110,6 @@ class Track {
 
     //  Mixer number for positioning
     this.mixerNumber = mixerNumber;
-
-    // Box for behind the slider
-    //fill(204, 101, 192, 127);
-    //this.rect = rect(mixerNumber*100, 100, mixerNumber*100 + 45, 200)
 
     //  Volume Slider
     this.slider = createSlider(0,10,5, 0.1);
