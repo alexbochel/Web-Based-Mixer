@@ -15,7 +15,8 @@ function setup() {
   button.position(20, 75);
   button.mousePressed(togglePlay);
   this.slider = createSlider(0,100,0);
-  this.slider.position(20,220);
+  this.slider.position(130,325);
+  this.slider.style('width', '475px');
   this.slider.mousePressed(scrub);
   solos = [];
 
@@ -108,19 +109,19 @@ class Track {
 
     //  Mute Button
     this.mute = createButton('Mute');
-    this.mute.position(mixerNumber*100 + 90, 165);
+    this.mute.position(mixerNumber*100 + 45, 165);
     this.mute.mousePressed(this.toggleMute);
     this.mute.muted = false;
 
     //  Solo Button
     this.solo = createButton('Solo');
-    this.solo.position(mixerNumber * 100 + 47, 170);
+    this.solo.position(mixerNumber * 100 + 47, 195);
     this.solo.mousePressed(this.toggleSolo);
     this.solo.isSolo = false;
 
     //  Dropdown menu
     this.dropdown = createSelect();
-    this.dropdown.position(mixerNumber * 100 + 37, 205);
+    this.dropdown.position(mixerNumber * 100 + 37, 225);
     this.dropdown.option('HIs','HIs');
     this.dropdown.option('Mids','Mids');
     this.dropdown.option('Lows','Lows');
@@ -133,7 +134,7 @@ class Track {
     //  EQ-Band level slider
     this.eqslider = createSlider(-12, 12, 0, 0.1);
     this.eqslider.style('width', '80px');
-    this.eqslider. position(mixerNumber*100 + 25, 230);
+    this.eqslider. position(mixerNumber*100 + 25, 260);
   }
 
   toggleMute() {
