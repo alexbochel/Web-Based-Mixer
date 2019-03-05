@@ -7,10 +7,14 @@ let selectedBand;
 let bands = ['Lows', 'Mids', 'HIs'];
 
 let canvas;
+let bg;
 
 function setup() {
   // put setup code here
   canvas = createCanvas(window.innerWidth, window.innerHeight);
+  
+  bg = loadImage('assets/background.jpg');
+  
   noStroke();
 
   button = createButton('Play');
@@ -54,7 +58,7 @@ function preload() {
 function draw() {
   clear();
   // put drawing code here
-  background('#b6afe0');
+  background(bg);
 
   for (var i = 0; i < tracks.length; i++) {
     solos.push(tracks[i].solo.isSolo);
@@ -81,7 +85,7 @@ function draw() {
   }
   var spectrum = fft.analyze();
   noStroke();
-  fill(23,0,0);
+  fill(216,223,229);
   for (var i = 0; i< spectrum.length; i++){
   var yx = map(i, 0, spectrum.length, 0, width+100);
   var h = -height + map(spectrum[i], 0, 255, height, 0);
