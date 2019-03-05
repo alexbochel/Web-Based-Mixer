@@ -1,11 +1,33 @@
+body {
+  background-color: #272727
+}
+
+.jumbotron {
+  background-color: #9a9a9a
+}
+
 img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
 }
 
+.main-title {
+  text-align: center;
+  color: white;
+}
+
 .bio-container {
   text-align: center;
+}
+
+p {
+  padding-top: 10px;
+}
+
+.bio-title {
+  padding-bottom: 20px;
+  color: white;
 }
 
 input[type=range] {
