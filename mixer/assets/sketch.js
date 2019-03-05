@@ -6,9 +6,11 @@ let x = 0;
 let selectedBand;
 let bands = ['Lows', 'Mids', 'HIs'];
 
+let canvas;
+
 function setup() {
   // put setup code here
-  canvas = createCanvas(800, 800);
+  canvas = createCanvas(window.innerWidth, window.innerHeight);
   noStroke();
 
   button = createButton('Play');
@@ -31,6 +33,12 @@ function setup() {
 function scrub(){
   togglePlay();
 
+}
+
+window.onresize = function() {
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  canvas.size(w, h);
 }
 
 function preload() {
