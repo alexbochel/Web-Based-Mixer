@@ -82,10 +82,11 @@ function draw() {
   }
   curr =  100*tracks[0].soundFile.currentTime()/tracks[0].soundFile.duration();
 
-  if(tracks[0].soundFile.isPlaying()){
-    this.slider.value(curr);
-    x = curr;
-  }
+  // if(tracks[0].soundFile.isPlaying()){
+  //   this.slider.value(curr);
+  //   x = curr;
+  // }
+  
   var spectrum = fft.analyze();
   noStroke();
   fill(216,223,229);
