@@ -8,7 +8,7 @@ let bands = ['Lows', 'Mids', 'HIs'];
 
 function setup() {
   // put setup code here
-  createCanvas(800, 800);
+  canvas = createCanvas(800, 800);
   noStroke();
 
   button = createButton('Play');
@@ -45,6 +45,8 @@ function preload() {
 
 function draw() {
   // put drawing code here
+  background('#b6afe0');
+  
   for (var i = 0; i < tracks.length; i++) {
     solos.push(tracks[i].solo.isSolo);
     if (tracks[i].solo.isSolo) numSolo++;
